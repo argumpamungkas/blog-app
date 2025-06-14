@@ -18,11 +18,12 @@
 
         {{--
         <x-header @props(['title']) /> --}}
+        {{-- mengirimkan title ke view header --}}
         <x-header :title="$title" />
 
-        {{-- Ini adalah main atau isi nya --}}
         <main>
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                {{-- Ini adalah main atau isi nya --}}
                 {{ $slot }}
             </div>
         </main>
