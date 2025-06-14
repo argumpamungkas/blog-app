@@ -12,11 +12,11 @@
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         {{-- mengirimkan endpoint sebagai href & :current untuk mengirimkan link yang active --}}
                         <x-nav-link href="/" :current="request()->is('/')"> Home </x-nav-link>
-                        <x-nav-link href="/blog" :current="request()->is('blog')"> Blog </x-nav-link>
+                        <x-nav-link href="/posts" :current="request()->is('posts')"> Blog </x-nav-link>
                         <x-nav-link href="/about" :current="request()->is('about')"> About </x-nav-link>
                         <x-nav-link href="/contact" :current="request()->is('contact')"> Contact </x-nav-link>
-                        {{-- <a href="/blog"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blog</a>
+                        {{-- <a href="/posts"
+                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">posts</a>
                         --}}
                         {{-- <a href="/about"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
@@ -94,7 +94,7 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             {{-- Tambah blcok agar ke bawah --}}
             <x-nav-link class='block' href="/" :current="request()->is('/')"> Home </x-nav-link>
-            <x-nav-link class='block' href="/blog" :current="request()->is('blog')"> Blog </x-nav-link>
+            <x-nav-link class='block' href="/posts" :current="request()->is('posts')"> Blog </x-nav-link>
             <x-nav-link class='block' href="/about" :current="request()->is('about')"> About </x-nav-link>
             <x-nav-link class='block' href="/contact" :current="request()->is('contact')"> Contact </x-nav-link>
         </div>
