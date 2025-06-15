@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->string('author');
+            // $table->string('author'); ==> diganti dengan foreign key
+            $table->unsignedBigInteger('author_id');
+            $table->foreign('author_id')->references('id')->on('users'); // relasi ke table users
             $table->text('description');
             $table->timestamps();
         });
