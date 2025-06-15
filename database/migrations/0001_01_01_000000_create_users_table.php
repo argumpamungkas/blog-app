@@ -9,6 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // php artisan migrate:fresh => migrasi dari awal
+    // php artisan migrate => migrasi yang ada perubahan saja
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
