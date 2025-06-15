@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -25,6 +26,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'author_id' => User::factory(), // memanggil factory dari user
+            'category_id' => Category::factory(),
             'slug' => Str::slug($title),
             'description' => fake()->text(rand(100, 200)),
             // 'created_at' => Carbon::now()->toDateTimeString(),
