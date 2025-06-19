@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->sentence(rand(1, 3), false);
+        $name = fake()->sentence(rand(1, 3), false); // penggunaan false untuk memastikan 1-3 kata
         return [
             'name' => $name,
             'slug' => Str::slug($name),

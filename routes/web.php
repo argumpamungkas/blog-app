@@ -16,7 +16,7 @@ Route::get('/posts', function () {
     return view('posts', ['title' => 'Blog', 'posts' => $posts]);
 });
 
-// post:slug => akan mencari data berdasarkan slugnya
+// post:slug => akan mencari data berdasarkan slugnya (route model binding)
 Route::get('/posts/{post:slug}', function (Post $post) {
     // $post = Post::where('slug', $slug)->first();
 

@@ -26,6 +26,7 @@ return new class extends Migration
             );
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories'); // relasi ke table users
+            // $table->foreignId('category_id')->constrained(); // otomatis akan relasi ke table categories
             $table->text('description');
             $table->timestamps();
         });

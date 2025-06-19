@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-
+    // php artisan make:model Category -mf (m = membuat migrate, f untuk membuat factory)
     use HasFactory;
 
     protected $fillable = ['name', 'slug'];
 
+    // 1 kategori punya banyak post
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'category_id');
