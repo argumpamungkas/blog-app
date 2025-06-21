@@ -14,7 +14,8 @@ Route::get('/posts', function () {
     // author & category menjadi eager loading (agar manggil user berdasarkan id di post hanya sekali/ menggunakan query in)
     // $posts = Post::with(['author', 'category'])->latest()->get();
 
-    $posts = Post::latest()->filter(request(['search', 'category', 'author']))->get(); // menggunakan query scope yang ada dimodel
+    // withQueryString berfungsi untuk melihat apakah kita dalam request tertentu ?
+    $posts = Post::latest()->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString(); // menggunakan query scope yang ada dimodel
 
     // if (request('search')) {
     //     $posts->where('title', 'like', '%' . request('search') . '%');
