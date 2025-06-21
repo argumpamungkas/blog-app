@@ -11,7 +11,10 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', function () {
-    $posts = Post::all();
+    // EAGER LOADING
+    // author & category menjadi eager loading (agar manggil user berdasarkan id di post hanya sekali/ menggunakan query in)
+    // $posts = Post::with(['author', 'category'])->latest()->get();
+    $posts = Post::latest()->get();
 
     return view('posts', ['title' => 'Blog', 'posts' => $posts]);
 });
@@ -24,11 +27,19 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 });
 
 Route::get('/authors/{user:username}', function (User $user) {
+    // LAZY EAGER LOADING
+    // load(relasi) -> (lazy eager loading)
+    // fungsi laravel akan secara otomatis mengambil DATA RELASI category dan author dari semua post yg diambil
+    // $posts = $user->posts->load('category', 'author'); // user -> has many post, post -> belongsto category and author 
+
     return view('author', ['title' => count($user->posts) .  ' Author by ' . $user->name, 'posts' => $user->posts]);
 });
 
 Route::get('/categories/{category:slug}', function (Category $category) {
-    return view('author', ['title' => 'Category by ' . $category->name, 'posts' => $category->posts]);
+    // LAZY EAGER LOADING
+    // $posts = $category->posts->load('category', 'author');
+
+    return view('posts', ['title' => 'Category by ' . $category->name, 'posts' => $category->posts]);
 });
 
 Route::get('/about', function () {

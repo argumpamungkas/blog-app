@@ -16,6 +16,10 @@ class Post extends Model
     protected $fillable = ['title', 'author', 'slug', 'description']; // yang boleh diisi
     // protected $guarded = ['id']; // yang tidak boleh diisi, sisanya boleh
 
+    // EAGER LOADING digunakan sebaiknya jika dalam view nya melakukan looping, jika relasi untuk 1 data saja LAZY LOADING saja cukup
+    // Untuk eager loading pada relasi maka tambahkan
+    protected $with = ['author', 'category']; // mengambil dari fungsi yang sudah ditetapkan pada routes web
+
     // One Post -> One Author (One to One)
     public function author(): BelongsTo
     {
