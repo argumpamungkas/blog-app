@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -30,6 +32,37 @@ class Post extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    #[Scope]
+    protected function filter(Builder $query, array $filters): void
+    {
+        // URL -> posts?search=
+        //ketika filters[search] ada isinya / berisi keyword / bernilai true => jalankan callback
+        // $search disini akan mengambil dari request(['search']) yang ada di routes
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('title', 'like', '%' . $search . '%');
+        });
+
+        // category
+        // akan menjalankan jika kita berada di category => URL -> posts?category=
+        $query->when($filters['category'] ?? false, function ($query, $category) {
+            return $query->whereHas(
+                'category',
+                fn(Builder $query) =>
+                $query->where('slug', $category)
+            ); // cari akan ada di inputan ?
+        });
+
+        // category
+        // akan menjalankan jika kita berada di author => URL -> posts?author=
+        $query->when($filters['author'] ?? false, function ($query, $author) {
+            return $query->whereHas(
+                'author',
+                fn(Builder $query) =>
+                $query->where('username', $author)
+            ); // cari akan ada di inputan ?
+        });
     }
 
 
