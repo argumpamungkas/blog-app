@@ -95,9 +95,18 @@
                     </div>
                 </article>
             @empty
-                <div>
-                    <p class="font-semibold text-2xl">Article not found</p>
-                    <a href="/posts" class="text-blue-500 hover:underline">&LeftArrow; Back to All Post</a>
+                <div class=" col-start-2 text-center">
+                    <img class="mx-auto my-2"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD3UlEQVR4nO1ZzYsUVxB/Oag3BTEqxICaU4Qcg5qo56gnwbgGAyb5BwQTUQSjNxVzDeQWV0MQ8RKV3He95GPcqeqump2u6kH8uJjkomE10d1MqO7Xu8My48zsdM/OyPzgQbNdU+/99tV3OzfCCIMHonsbgeULJBkHkrtA+heyvkgW6Z9AUrJ3ZZLPg6C2wQ0akKM9yHoLWV8ia73DZbI3kaPdy31+F4byDpD8PH84klkgnQDS48DRdoB4falUWmHLnrEiO4D0SyCdNNmF3+ntIIi2LguJgOQIsP6dHkZmkPX8lMibnf7eiAHrBSR5ZjqA9ClS9Emxp14EIPm64RaulaPoLbdEIMomYL2e6QOSM0vV1RWQ9Zzf8D97rtfrb+SjV44ByVxfyAQkR/xGc0hyMHf9rB/Pk6nEh11hju19IiA5WaDZnsp8BqrVLUVskEYnkmuuQJipNvjMrSLyhJF4Fob6tisYFjx8JKwD1XblptgnO/sPnXd9QhKaWevA8lNuZUeShUlmW+WJciXaj6SPgPUhcry3nc5O5JMESknSfGHPPRNJaqfU+SZay9iBfB5gedBeZ2fyyHInNenos144pMpIxj2R470erFt5YP0qldHve+GQKiO5m2xakR2tZMw87HB2KCD9qJ3OTuXDUD/wZH93vcKX4vVu6qi8EAS1Db6o/KNnZcD6rykjopWuzxCRVd6s/3ldiDx9LUwLWOO+OHtRKIfxh77fudOX8LsYUyTbgPRbJInSUkNmgLRqfwvD6N1O9YAPv8j63ZIJNEmIk+1kS7XaGiS54nuVpr168o5k3GTb6UOfEMuV+EBedpqUKO1KBYv3C22rXLK+nYjW2rJnZPkmeddBbmgsUX4RWe3yQDrtSJzuQjsi5lPl6enNLWWq1S1IOoUsv71SF+lFv+ePLi8EFd3pzeJ5P8t4MDOcrr2Xq/KslLemJ68+vRlMN7LeyPZyecNMYt6+SU65goCsp33IfVzYNNLmTtnwwQYFeesvsx4y3WZSAcf7XJGwUU1Gxm4mDzPz5nQ6m6AkEZJ1zBWNjExmxzZkW6ouCx6ZTyyeDUNfyFTiw5nP2FDCQnM3LWkyMiW9aJHQl+pPmgzBX/aHjOWEhcFENsSetNLCmiJzVquabdlz2ihFJ5KM3TDEBtYf0k8SOrZsZAw2srFpRzefFazHQNKrU2HtfdeAZSezUFbER4HlclKu2MedpJ+RGWC5j6y/WuFohypVq+tcCwwEmbxgs2VcTIZktszyqRs24IjMgAJHNzOgwNHNDCigSZ6xD7RuGIENZgYkZ90wA1jHhvYmRnBDiv8BEh3gvv7vLgkAAAAASUVORK5CYII="
+                        alt="nothing-found">
+                    <p class="text-gray-300 font-semibold text-2xl">
+                        Article {{ request('search') }} not found</p>
+                    @if (request('category') || request('author'))
+                        <a href="/posts?{{ request('category') ? 'category=' . request('category') : 'author=' . request('author') }}"
+                            class="text-blue-500 hover:underline">&LeftArrow; Back to Post</a>
+                    @else
+                        <a href="/posts" class="text-blue-500 hover:underline">&LeftArrow; Back to All Post</a>
+                    @endif
                 </div>
             @endforelse
 
