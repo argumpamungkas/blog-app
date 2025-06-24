@@ -11,10 +11,10 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         {{-- mengirimkan endpoint sebagai href & :current untuk mengirimkan link yang active --}}
-                        <x-nav-link href="/" :current="request()->is('/')"> Home </x-nav-link>
-                        <x-nav-link href="/posts" :current="request()->is('posts')"> Blog </x-nav-link>
-                        <x-nav-link href="/about" :current="request()->is('about')"> About </x-nav-link>
-                        <x-nav-link href="/contact" :current="request()->is('contact')"> Contact </x-nav-link>
+                        <x-my-nav-link href="/" :current="request()->is('/')"> Home </x-my-nav-link>
+                        <x-my-nav-link href="/posts" :current="request()->is('posts')"> Blog </x-my-nav-link>
+                        <x-my-nav-link href="/about" :current="request()->is('about')"> About </x-my-nav-link>
+                        <x-my-nav-link href="/contact" :current="request()->is('contact')"> Contact </x-my-nav-link>
                         {{-- <a href="/posts"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">posts</a>
                         --}}
@@ -31,15 +31,32 @@
                     <!-- Profile dropdown -->
                     <div class="relative ml-3">
                         <div>
-                            <button type="button" @click="isOpen = !isOpen"
-                                class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Open user menu</span>
-                                <img class="size-8 rounded-full"
-                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="">
-                            </button>
+                            @if (Auth::check())
+                                <button type="button" @click="isOpen = !isOpen"
+                                    class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden cursor-pointer"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="absolute -inset-1.5"></span>
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="size-8 rounded-full"
+                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                        alt="">
+                                    <div class="text-gray-300 font-medium ml-3">{{ Auth::user()->name }}</div>
+                                    <div class="ms-1 text-gray-300">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            @else
+                                <a href="/login"
+                                    class="text-white text-sm font-medium py-2 px-4 border-1 border-gray-700">Login</a>
+                                <span class="text-white ">|</span>
+                                <a href="/register"
+                                    class="text-white text-sm font-medium py-2 px-4 border-1 border-gray-700">Register</a>
+                            @endif
                         </div>
 
                         {{-- Menu icon profle diclick --}}
@@ -51,12 +68,15 @@
                             role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                             tabindex="-1">
                             <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                 tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                            <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                 tabindex="-1" id="user-menu-item-1">Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                tabindex="-1" id="user-menu-item-2">Sign out</a>
+                            <form method="POST" action="/logout">
+                                @csrf
+                                <button type="submit" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                    role="menuitem" tabindex="-1" id="user-menu-item-2">Log Out</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -93,34 +113,46 @@
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             {{-- Tambah blcok agar ke bawah --}}
-            <x-nav-link class='block' href="/" :current="request()->is('/')"> Home </x-nav-link>
-            <x-nav-link class='block' href="/posts" :current="request()->is('posts')"> Blog </x-nav-link>
-            <x-nav-link class='block' href="/about" :current="request()->is('about')"> About </x-nav-link>
-            <x-nav-link class='block' href="/contact" :current="request()->is('contact')"> Contact </x-nav-link>
+            <x-my-nav-link class='block' href="/" :current="request()->is('/')"> Home </x-my-nav-link>
+            <x-my-nav-link class='block' href="/posts" :current="request()->is('posts')"> Blog </x-my-nav-link>
+            <x-my-nav-link class='block' href="/about" :current="request()->is('about')"> About </x-my-nav-link>
+            <x-my-nav-link class='block' href="/contact" :current="request()->is('contact')"> Contact </x-my-nav-link>
         </div>
         <div class="border-t border-gray-700 pt-4 pb-3">
-            <div class="flex items-center px-5">
-                <div class="shrink-0">
-                    <img class="size-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="">
-                </div>
-                <div class="ml-3">
-                    <div class="text-base/5 font-medium text-white">Tom Cook</div>
-                    <div class="text-sm font-medium text-gray-400">tom@example.com</div>
-                </div>
+            @if (Auth::check())
+                <div class="flex items-center px-5">
+                    <div class="shrink-0">
+                        <img class="size-10 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt="{{ Auth::user()->name }}">
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-base/5 font-medium text-white">{{ Auth::user()->name }}</div>
+                        {{-- <div class="text-sm font-medium text-gray-400">tom@example.com</div> --}}
+                    </div>
 
-            </div>
-            <div class="mt-3 space-y-1 px-2">
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your
-                    Profile</a>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign
-                    out</a>
-            </div>
+                </div>
+                <div class="mt-3 space-y-1 px-2">
+                    <a href="/profile"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your
+                        Profile</a>
+                    <a href="/dashboard"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
+                    <form method="POST" action="/logout">
+                        @csrf
+                        <button type="submit"
+                            class="block w-full text-start rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white cursor-pointer"
+                            role="menuitem" tabindex="-1" id="user-menu-item-2">Log Out</button>
+                    </form>
+                </div>
+            @else
+                <div class="my-3 space-y-2 px-2">
+                    <a href="/login"
+                        class="block text-white text-sm font-medium py-2 px-4 border-1 border-gray-700">Login</a>
+                    <a href="/register"
+                        class="block text-white text-sm font-medium py-2 px-4 border-1 border-gray-700">Register</a>
+                </div>
+            @endif
         </div>
     </div>
 </nav>
