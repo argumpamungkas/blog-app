@@ -27,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
         Model::preventsLazyLoading(); // prevents -> boolean
         Model::preventLazyLoading(); // prevent -> menjalankan method
         */
+        Model::preventLazyLoading(!$this->app->isProduction());
     }
 }

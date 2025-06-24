@@ -23,6 +23,6 @@ class UserSeeder extends Seeder
         ]);
 
         // sisanya generate user
-        User::factory(9)->create();
+        User::factory(5)->create();
     }
 }
