@@ -10,7 +10,8 @@
             <div class="bg-white overflow-hidden shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{-- {{ __("You're logged in!") }} --}}
-                    {{ $posts }}
+                    {{-- {{ $posts }} --}}
+                    <x-posts.table :posts='$posts' />
                 </div>
             </div>
         </div>
