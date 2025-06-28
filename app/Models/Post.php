@@ -15,8 +15,9 @@ class Post extends Model
     // INI FUNGSI JIKA NAMA TABLE NYA BUKAN POSTS (PLURAL)
     // protected $table = 'blog_posts';
 
-    protected $fillable = ['title', 'author', 'slug', 'description']; // yang boleh diisi
+    protected $fillable = ['title', 'author_id', 'category_id', 'slug', 'description']; // yang boleh diisi
     // protected $guarded = ['id']; // yang tidak boleh diisi, sisanya boleh
+    // protected $guarded = []; // agar semua bisa dipilih
 
     // EAGER LOADING digunakan sebaiknya jika dalam view nya melakukan looping, jika relasi untuk 1 data saja LAZY LOADING saja cukup
     // Untuk eager loading pada relasi maka tambahkan

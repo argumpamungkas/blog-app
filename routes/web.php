@@ -61,6 +61,9 @@ Route::get('/contact', function () {
 
 Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
+// STORE
+Route::post('/dashboard', [PostController::class, 'store'])->middleware(['auth', 'verified']);
+
 Route::get('/dashboard/create', [PostController::class, 'create'])->middleware(['auth', 'verified']);
 
 // akan otomatis mencari berdasarkan slugnya

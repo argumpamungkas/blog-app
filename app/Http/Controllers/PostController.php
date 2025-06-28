@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +38,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Post::create([
+            'title' => $request->title,
+            'author_id' => Auth::user()->id,
+            'category_id' => $request->category_id,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+        ]);
+
+        return redirect('/dashboard');
     }
 
     /**
