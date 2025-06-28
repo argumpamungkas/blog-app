@@ -15,11 +15,13 @@ class PostController extends Controller
     {
         $posts = Post::latest()->where('author_id', Auth::user()->id);
 
-        if (request('keyword')) {
-            $posts->where('title', 'like', '%' . request('keyword') . '%');
+        $keyword = request('keyword');
+
+        if ($keyword) {
+            $posts->where('title', 'like', '%' . $keyword . '%');
         }
 
-        return view('dashboard', ['posts' => $posts->paginate(5)->withQueryString()]);
+        return view('dashboard.index', ['posts' => $posts->paginate(5)->withQueryString()]);
     }
 
     /**
@@ -41,9 +43,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        //
+        return view('dashboard.show', ['post' => $post]);
     }
 
     /**

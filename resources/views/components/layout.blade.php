@@ -12,7 +12,7 @@
 </head>
 
 <body class="h-full">
-    <div class="min-h-full">
+    <div class="min-h-full bg-gray-200 dark:bg-gray-900">
 
         <x-navbar />
 
@@ -22,7 +22,7 @@
         <x-header :title="$title" />
 
         <main>
-            <div class=" mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="text-slate-800 dark:text-white mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 {{-- Ini adalah main atau isi nya --}}
                 {{ $slot }}
             </div>

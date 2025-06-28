@@ -19,12 +19,30 @@
                             </div>
                             <input type="text" id="simple-search"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Search Post" name="keyword">
+                                placeholder="Search post" name="keyword" value="{{ request('keyword') ?? '' }}"
+                                @if ($posts->isNotEmpty() && !request('keyword')) autofocus @endif>
                         </div>
                     </form>
                 </div>
                 <div
                     class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+
+                    {{-- RESET --}}
+                    @if (request('keyword'))
+                        <a href="/dashboard"
+                            class="flex items-center justify-center text-white bg-transparent border-red-500 border-1 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-transparent dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-300">
+                            <svg class="h-3.5 w-3.5 mr-2 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1"
+                                    d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4" />
+                            </svg>
+                            Reset
+                        </a>
+                    @endif
+
+                    {{-- ADD POST --}}
                     <button type="button" id="createProductModalButton" data-modal-target="createProductModal"
                         data-modal-toggle="createProductModal"
                         class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
@@ -53,11 +71,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posts as $post)
+                        @forelse($posts as $post)
                             <tr class="border-b dark:border-gray-700">
                                 <th scope="row"
                                     class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {{ $loop->iteration }}</th>
+                                    {{ $loop->iteration }}.</th>
                                 <td class="px-4 py-3">{{ $post->title }}</td>
                                 {{-- <td class="px-4 py-3">{{ $post->author->name }}</td> --}}
                                 <td class="px-4 py-3">{{ $post->category->name }}</td>
@@ -92,8 +110,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button type="button" data-modal-target="readProductModal"
-                                                    data-modal-toggle="readProductModal"
+                                                <a href="/dashboard/{{ $post->slug }}"
                                                     class="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
                                                     <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg"
                                                         viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -102,7 +119,7 @@
                                                             d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" />
                                                     </svg>
                                                     Show Post
-                                                </button>
+                                                </a>
                                             </li>
                                             <li>
                                                 <button type="button" data-modal-target="deleteModal"
@@ -121,7 +138,18 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <th colspan="5" class="text-center">
+                                    <div class="my-8 py-8">
+                                        <img class="mx-auto my-2"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD3UlEQVR4nO1ZzYsUVxB/Oag3BTEqxICaU4Qcg5qo56gnwbgGAyb5BwQTUQSjNxVzDeQWV0MQ8RKV3He95GPcqeqump2u6kH8uJjkomE10d1MqO7Xu8My48zsdM/OyPzgQbNdU+/99tV3OzfCCIMHonsbgeULJBkHkrtA+heyvkgW6Z9AUrJ3ZZLPg6C2wQ0akKM9yHoLWV8ia73DZbI3kaPdy31+F4byDpD8PH84klkgnQDS48DRdoB4falUWmHLnrEiO4D0SyCdNNmF3+ntIIi2LguJgOQIsP6dHkZmkPX8lMibnf7eiAHrBSR5ZjqA9ClS9Emxp14EIPm64RaulaPoLbdEIMomYL2e6QOSM0vV1RWQ9Zzf8D97rtfrb+SjV44ByVxfyAQkR/xGc0hyMHf9rB/Pk6nEh11hju19IiA5WaDZnsp8BqrVLUVskEYnkmuuQJipNvjMrSLyhJF4Fob6tisYFjx8JKwD1XblptgnO/sPnXd9QhKaWevA8lNuZUeShUlmW+WJciXaj6SPgPUhcry3nc5O5JMESknSfGHPPRNJaqfU+SZay9iBfB5gedBeZ2fyyHInNenos144pMpIxj2R470erFt5YP0qldHve+GQKiO5m2xakR2tZMw87HB2KCD9qJ3OTuXDUD/wZH93vcKX4vVu6qi8EAS1Db6o/KNnZcD6rykjopWuzxCRVd6s/3ldiDx9LUwLWOO+OHtRKIfxh77fudOX8LsYUyTbgPRbJInSUkNmgLRqfwvD6N1O9YAPv8j63ZIJNEmIk+1kS7XaGiS54nuVpr168o5k3GTb6UOfEMuV+EBedpqUKO1KBYv3C22rXLK+nYjW2rJnZPkmeddBbmgsUX4RWe3yQDrtSJzuQjsi5lPl6enNLWWq1S1IOoUsv71SF+lFv+ePLi8EFd3pzeJ5P8t4MDOcrr2Xq/KslLemJ68+vRlMN7LeyPZyecNMYt6+SU65goCsp33IfVzYNNLmTtnwwQYFeesvsx4y3WZSAcf7XJGwUU1Gxm4mDzPz5nQ6m6AkEZJ1zBWNjExmxzZkW6ouCx6ZTyyeDUNfyFTiw5nP2FDCQnM3LWkyMiW9aJHQl+pPmgzBX/aHjOWEhcFENsSetNLCmiJzVquabdlz2ihFJ5KM3TDEBtYf0k8SOrZsZAw2srFpRzefFazHQNKrU2HtfdeAZSezUFbER4HlclKu2MedpJ+RGWC5j6y/WuFohypVq+tcCwwEmbxgs2VcTIZktszyqRs24IjMgAJHNzOgwNHNDCigSZ6xD7RuGIENZgYkZ90wA1jHhvYmRnBDiv8BEh3gvv7vLgkAAAAASUVORK5CYII="
+                                            alt="nothing-found">
+                                        <h2>{{ request('keyword') }} not found</h2>
+                                    </div>
+                                </th>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -131,6 +159,7 @@
                     {{ $posts->links() }}
                 </div>
             @endif
+
         </div>
     </div>
 </section>
