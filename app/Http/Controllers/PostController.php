@@ -81,6 +81,6 @@ class PostController extends Controller
         // return $post;
         $post->delete();
 
-        return redirect('/dashboard')->with(['success' => 'Your post ' . $request->title . ' has been removed!']);
+        return redirect('/dashboard')->with(['success' => 'Your post has been removed!']);
     }
 }
