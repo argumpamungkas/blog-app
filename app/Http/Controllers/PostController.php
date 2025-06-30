@@ -46,7 +46,7 @@ class PostController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect('/dashboard');
+        return redirect('/dashboard')->with(['success' => 'Your post ' . $request->title . ' has been saved']);
     }
 
     /**
@@ -76,8 +76,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        // return $post;
+        $post->delete();
+
+        return redirect('/dashboard')->with(['success' => 'Your post ' . $request->title . ' has been removed!']);
     }
 }
