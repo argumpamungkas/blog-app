@@ -16,7 +16,7 @@
                 placeholder="Type post title" autofocus required value="{{ old('title') ?? $post->title }}">
 
             @error('title')
-                <h2 class=" text-sm text-red-600 mt-2">{{ $message }}</h2>
+                <p class=" text-sm text-red-600 mt-2">{{ $message }}</p>
             @enderror
 
         </div>
@@ -32,7 +32,7 @@
             </select>
 
             @error('category_id')
-                <h2 class=" text-sm text-red-600 mt-2">{{ $message }}</h2>
+                <p class=" text-sm text-red-600 mt-2">{{ $message }}</p>
             @enderror
 
         </div>
@@ -45,7 +45,7 @@
         </div>
 
         @error('description')
-            <h2 class=" text-sm text-red-600 mb-2">{{ $message }}</h2>
+            <p class=" text-sm text-red-600 mb-2">{{ $message }}</p>
         @enderror
 
         <div class="flex gap-3">

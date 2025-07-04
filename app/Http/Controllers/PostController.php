@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -38,11 +40,27 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+        //     'title' => 'required|unique:posts|min:4|max:255',
+        //     'category_id' => 'required',
+        //     'description' => 'required',
+        // ]);
+
+        Validator::make($request->all(), [
+            'title' => 'required|unique:posts|min:4|max:255',
+            'category_id' => 'required',
+            'description' => 'required',
+        ], [
+            'title.required' => 'Field harus diisi',
+            'category_id.required' => 'Field harus diisi',
+            'description.required' => 'Field harus diisi',
+        ])->validate();
+
         Post::create([
             'title' => $request->title,
             'author_id' => Auth::user()->id,
             'category_id' => $request->category_id,
-            'slug' => Str::slug($request->title),
+            'slug' => Auth::user()->username . '-' . Str::slug($request->title),
             'description' => $request->description,
         ]);
 
