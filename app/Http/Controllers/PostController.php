@@ -60,17 +60,35 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
         //
+        return view('dashboard.edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        //validation
+        $request->validate([
+            'title' => 'required|min:4|max:255|unique:posts,title' . $post->id, // agar saat edit dan tidak ingin ada perubahan pada title
+            'category_id' => 'required',
+            'description' => 'required',
+        ]);
+
+        //update
+        $post->update([
+            'title' => $request->title,
+            'author_id' => Auth::user()->id,
+            'category_id' => $request->category_id,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+        ]);
+
+        //routes
+        return redirect('/dashboard')->with(['success' => 'Your post has been updated!']);
     }
 
     /**

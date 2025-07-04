@@ -69,6 +69,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::delete('/dashboard/{post:slug}', [PostController::class, 'destroy']);
 
+    Route::get('/dashboard/{post:slug}/edit', [PostController::class, 'edit']);
+    Route::patch('/dashboard/{post:slug}', [PostController::class, 'update']);
+
     // akan otomatis mencari berdasarkan slugnya
     Route::get('/dashboard/{post:slug}', [PostController::class, 'show']);
 });
