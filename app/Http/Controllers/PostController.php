@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,9 +50,9 @@ class PostController extends Controller
             'category_id' => 'required',
             'description' => 'required',
         ], [
-            'title.required' => 'Field harus diisi',
-            'category_id.required' => 'Field harus diisi',
-            'description.required' => 'Field harus diisi',
+            'title.required' => 'Field title harus diisi',
+            'category_id.required' => 'Field category harus diisi',
+            'description.required' => 'Field description harus diisi',
         ])->validate();
 
         Post::create([

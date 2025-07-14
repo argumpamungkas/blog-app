@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-white">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-100">
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>
@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -58,6 +58,26 @@
             @endif
         </div>
 
+        {{-- AVATAR --}}
+        <div>
+            <label class="block mb-2 text-sm font-medium text-gray-800 dark:text-white" for="avatar">Upload
+                Avatar
+            </label>
+            <input
+                class="@error('avatar') bg-red-50 border-red-500 text-red</div>-900 placeholder-red-700 focus:ring-red-600 focus:border-red-600 @enderror block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                aria-describedby="avatar_help" id="avatar" name="avatar" type="file" accept="image/*">
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="avatar_help">.png or .jpg</div>
+            @error('avatar')
+                <p class=" text-sm text-red-600 mt-2">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <img class="w-20 h-20 rounded-full"
+                src="{{ $user->avatar ? asset($user->avatar) : asset('img/avatar.jpg') }}" alt="{{ $user->name }} }}"
+                id="avatar-preview" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -68,3 +88,19 @@
         </div>
     </form>
 </section>
+
+<script>
+    const input = document.getElementById('avatar');
+    const previewPhoto = () => {
+        const file = input.files;
+        if (file) {
+            const fileReader = new FileReader();
+            const preview = document.getElementById('avatar-preview');
+            fileReader.onload = function(event) {
+                preview.setAttribute('src', event.target.result);
+            }
+            fileReader.readAsDataURL(file[0]);
+        }
+    }
+    input.addEventListener("change", previewPhoto);
+</script>

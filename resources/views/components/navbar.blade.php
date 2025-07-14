@@ -38,8 +38,8 @@
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
                                     <img class="size-8 rounded-full"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="">
+                                        src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('img/avatar.jpg') }}"
+                                        alt="{{ Auth::user()->name }}">
                                     <div class="text-gray-300 font-medium ml-3">{{ Auth::user()->name }}</div>
                                     <div class="ms-1 text-gray-300">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@
                 <div class="flex items-center px-5">
                     <div class="shrink-0">
                         <img class="size-10 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('img/avatar.jpg') }}"
                             alt="{{ Auth::user()->name }}">
                     </div>
                     <div class="ml-3">
