@@ -1,3 +1,8 @@
+@push('style')
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+@endpush
+
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-white">
@@ -75,7 +80,7 @@
         <div>
             <img class="w-20 h-20 rounded-full"
                 src="{{ $user->avatar ? asset($user->avatar) : asset('img/avatar.jpg') }}" alt="{{ $user->name }} }}"
-                id="avatar-preview" />
+                id="avatar-preview" alt="{{ $user->name }}" />
         </div>
 
         <div class="flex items-center gap-4">
@@ -89,18 +94,55 @@
     </form>
 </section>
 
-<script>
-    const input = document.getElementById('avatar');
-    const previewPhoto = () => {
-        const file = input.files;
-        if (file) {
-            const fileReader = new FileReader();
-            const preview = document.getElementById('avatar-preview');
-            fileReader.onload = function(event) {
-                preview.setAttribute('src', event.target.result);
+@push('script')
+    <script>
+        const input = document.getElementById('avatar');
+        const previewPhoto = () => {
+            const file = input.files;
+            if (file) {
+                const fileReader = new FileReader();
+                const preview = document.getElementById('avatar-preview');
+                fileReader.onload = function(event) {
+                    preview.setAttribute('src', event.target.result);
+                }
+                fileReader.readAsDataURL(file[0]);
             }
-            fileReader.readAsDataURL(file[0]);
         }
-    }
-    input.addEventListener("change", previewPhoto);
-</script>
+        input.addEventListener("change", previewPhoto);
+    </script>
+
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+    <script>
+        FilePond.registerPlugin(FilePondPluginImageTransform);
+        FilePond.registerPlugin(FilePondPluginImageResize);
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        FilePond.registerPlugin(FilePondPluginFileValidateSize);
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+
+        // Initialize
+        // Get a reference to the file input element
+        const inputElement = document.querySelector('#avatar');
+        // Create a FilePond instance
+        const pond = FilePond.create(inputElement, {
+            acceptedFileTypes: ['image/*'],
+            maxFileSize: '5MB',
+            imageResizeTargetWidth: '600',
+            imageResizeMode: 'contain',
+            imageResizeUpscale: false, // true : jika file nya kurang dari yang ditentukan maka akan disamakan, false : ukuran sesuai dengan yang diupload
+            server: {
+                url: '/upload', // endpoint
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // token laravel
+                }
+            },
+        });
+
+        // console.log(pond);
+    </script>
+@endpush

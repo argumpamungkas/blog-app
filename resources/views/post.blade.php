@@ -47,7 +47,7 @@ URL: https://flowbite.com/docs/components/typography/
                         class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
                         {{ $post->title }}</h1>
                 </header>
-                <p>{{ $post->description }}</p>
+                <div>{!! $post->description !!}</div>
             </article>
         </div>
     </main>

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -29,26 +30,54 @@ class ProfileController extends Controller
     {
         // $request->user()->fill($request->validated());
 
+        // dd($request->all());
+
         $validated = $request->validated();
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        if ($request->hasFile('avatar')) {
-            // cek apakah di folder ada foto sebelumnya ?
+        // Versin LARAVEL
+        // if ($request->hasFile('avatar')) {
+        //     // cek apakah di folder ada foto sebelumnya ?
+        //     if (!empty($request->user()->avatar)) {
+        //         Storage::disk('public')->delete($request->user()->avatar);
+        //     }
+
+        //     $path = $request->file('avatar')->store('img', 'public');
+        //     $validated['avatar'] = $path;
+        // }
+
+        // VERSI FILEPOND
+        if ($request->avatar) { // cek apakah ada avatar
             if (!empty($request->user()->avatar)) {
                 Storage::disk('public')->delete($request->user()->avatar);
             }
 
-            $path = $request->file('avatar')->store('img', 'public');
-            $validated['avatar'] = $path;
+            $newFileName = Str::after($request->avatar, 'tmp/');
+
+            // pindahkan file dari tmp ke public
+            Storage::disk('public')->move($request->avatar, "img/$newFileName");
+
+            // nama file yang di save didb;
+            $validated['avatar'] = "img/$newFileName";
         }
 
         // $request->user()->save();
         $request->user()->update($validated);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function upload(Request $request)
+    {
+        // simpen sementara ke tmp
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('tmp', 'public');
+        }
+
+        return $path;
     }
 
     /**

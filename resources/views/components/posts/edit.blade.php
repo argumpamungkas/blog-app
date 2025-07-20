@@ -1,3 +1,7 @@
+@push('style')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+@endpush
+
 <!-- Modal content -->
 <div class="max-w-4xl relative p-4 bg-white rounded-lg border dark:bg-gray-800 dark:border-gray-800 sm:p-5">
     <!-- Modal header -->
@@ -5,7 +9,7 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Update Post</h3>
     </div>
     <!-- Modal body -->
-    <form action="/dashboard/{{ $post->slug }}" method="POST">
+    <form action="/dashboard/{{ $post->slug }}" method="POST" id="post-form">
         @csrf
         @method('PATCH')
         <div class="mb-4">
@@ -40,13 +44,17 @@
             <label for="description"
                 class=" block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
             <textarea id="description" rows="4" name="description"
-                class="@error('description') bg-red-50 border-red-500 text-red-900 placeholder-red-700 @enderror block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                class="hidden @error('description') bg-red-50 border-red-500 text-red-900 placeholder-red-700 @enderror block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Write post description here">{{ old('description') ?? $post->description }}</textarea>
-        </div>
 
-        @error('description')
-            <p class=" text-sm text-red-600 mb-2">{{ $message }}</p>
-        @enderror
+            <div id="editor">
+                {!! old('description', $post->description) !!}
+            </div>
+
+            @error('description')
+                <p class=" text-sm text-red-600 mb-2">{{ $message }}</p>
+            @enderror
+        </div>
 
         <div class="flex gap-3">
             <button type="submit"
@@ -60,3 +68,31 @@
         </div>
     </form>
 </div>
+
+@push('script')
+    <!-- Include the Quill library -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <!-- Initialize Quill editor -->
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write post in here',
+        });
+
+        const postForm = document.querySelector('#post-form');
+        const description = document.querySelector('#description');
+        const editor = document.querySelector('#editor');
+
+        postForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // agar data tidak dikirim dulu
+
+
+            const content = editor.children[0].innerHTML;
+            // console.log(content);
+            description.value = content;
+
+            this.submit();
+        });
+    </script>
+@endpush

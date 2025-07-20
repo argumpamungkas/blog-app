@@ -71,7 +71,7 @@
                             <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                 tabindex="-1" id="user-menu-item-0">Your Profile</a>
                             <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                tabindex="-1" id="user-menu-item-1">Settings</a>
+                                tabindex="-1" id="user-menu-item-1">Dashboard</a>
                             <form method="POST" action="/logout">
                                 @csrf
                                 <button type="submit" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
@@ -137,7 +137,7 @@
                         class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your
                         Profile</a>
                     <a href="/dashboard"
-                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Dashboard</a>
                     <form method="POST" action="/logout">
                         @csrf
                         <button type="submit"
